@@ -54,7 +54,7 @@
 								uploadButton.innerHTML = 'Last opp';
 								$(uploadButton).attr("disabled", false);
 								$('#image').prop('title', 'Velg bildet ditt');
-								$('#download').html("<a href='"+data.download_link+"' download='"+data.formData.name+"'>Last ned <em>"+data.formData.name+"</em></a>");
+								$('#download').html("<a href='"+data.download_link+"' download='"+data.formData.name+"'><button class='btn btn-lg btn-primary btn-block'>Last ned <em>"+data.formData.name+"</em></button></a>");
 							} else {
 								// Handle errors here
 								console.log('ERRORS: ' + data.error);
