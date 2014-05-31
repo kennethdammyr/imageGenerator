@@ -2,6 +2,7 @@
 	<head>
 		<title>AkerYachts Bildegenerator</title>
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+		<link href='http://fonts.googleapis.com/css?family=Lato:100,300,300italic|Cinzel' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" href="style.css">
 		<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
@@ -52,6 +53,7 @@
 								console.log(data);
 								uploadButton.innerHTML = 'Last opp';
 								$('#image').prop('title', 'Velg bildet ditt');
+								$('#download').append("<a href='"+data.download_link+"' download='"+data.download_link+"'>Last ned "+data.formData.name+"</a>");
 							} else {
 								// Handle errors here
 								console.log('ERRORS: ' + data.error);
@@ -60,6 +62,7 @@
 						error: function(jqXHR, textStatus, errorThrown){
 							// Handle errors here
 							console.log(jqXHR);	
+							uploadButton.innerHTML = 'Last opp';
 						}
 					});
 				}); // End click-event
@@ -75,14 +78,17 @@
 				<div class="col-lg-6 col-lg-offset-3">
 					<h1>AkerYachts bildegenerator</h1>
 
-					<form role="form" action="image_processor.php" id="imageform">
+					<form role="form" action="image_processor.php" id="imageform" class="form-inline center-block">
 						<div class="form-group">
 
-							<input type="file" id="image" name="image" title="Velg bildet ditt" data-filename-placement="inside" style="width: 200px;">
+							<input type="file" id="image" name="image" title="Velg bildet ditt" data-filename-placement="inside" class="pull-left">
 
 						</div>
-						<button type="submit" class="btn btn-default" id="submit">Last opp</button>
+						<button type="submit" class="btn btn-default pull-right" id="submit">Last opp</button>
 					</form>
+					<h2 id="download">
+						
+					</h2>
 
 				</div>
 			</div>
