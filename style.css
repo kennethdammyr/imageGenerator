@@ -2,3 +2,7 @@ body {
 	background-color: #3b3c3c;
 	color: #ff4216;
 }
+
+#image {
+	width: 200px;
+}

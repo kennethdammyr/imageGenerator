@@ -3,30 +3,88 @@
 		<title>AkerYachts Bildegenerator</title>
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 		<link rel="stylesheet" href="style.css">
+		<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+		<script src="bootstrap.file-input.js"></script>
+
+		<script>
+			$('document').ready(function(){
+				$('input[type=file]').bootstrapFileInput();
+
+				// Handle file upload
+				$('#submit').click(function(event){
+					event.preventDefault();
+
+					// Prepare data
+					var form = document.getElementById('imageform');
+					var fileSelect = document.getElementById('image');
+					var uploadButton = document.getElementById('submit');
+
+					uploadButton.innerHTML = 'Fikser...';
+
+					// Get the selected files from the input
+					var files = fileSelect.files;
+
+					// Create a new FormData object.
+					var data = new FormData();
+
+					// Check the file type.
+					if (!files[0].type.match('image.*')) {
+
+						console.log("Fikk noe rart");
+					}
+
+					// Add the file to the request
+					data.append('image', files[0], files[0].name);
+
+
+					// Perform AJAX-request
+					$.ajax({
+						url: 'image_processor.php',
+						type: 'POST',
+						data: data,
+						cache: false,
+						dataType: 'json',
+						processData: false, // Don't process the files
+						contentType: false, // Set content type to false as jQuery will tell the server its a query string request
+						success: function(data, textStatus, jqXHR){
+							if(typeof data.error === 'undefined') {
+								console.log(data);
+								uploadButton.innerHTML = 'Last opp';
+								$('#image').prop('title', 'Velg bildet ditt');
+							} else {
+								// Handle errors here
+								console.log('ERRORS: ' + data.error);
+							}
+						},
+						error: function(jqXHR, textStatus, errorThrown){
+							// Handle errors here
+							console.log(jqXHR);	
+						}
+					});
+				}); // End click-event
+
+			}); // End ready-event
+
+		</script>
 	</head>
 	<body>
+
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-6 col-lg-offset-3">
 					<h1>AkerYachts bildegenerator</h1>
 
+					<form role="form" action="image_processor.php" id="imageform">
+						<div class="form-group">
 
+							<input type="file" id="image" name="image" title="Velg bildet ditt" data-filename-placement="inside" style="width: 200px;">
 
-					<form role="form" action="image_processor.php">
-  <div class="form-group">
-    <label for="exampleInputFile">Velg bildet du vil fikse</label>
-    <input type="file" id="image" name="image">
-    <p class="help-block">Det må være et bilde...</p>
-  </div>
-  <button type="submit" class="btn btn-default">Submit</button>
-</form>
-
-
-
+						</div>
+						<button type="submit" class="btn btn-default" id="submit">Last opp</button>
+					</form>
 
 				</div>
-
 			</div>
 		</div>
 
