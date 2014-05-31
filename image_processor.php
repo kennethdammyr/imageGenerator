@@ -13,6 +13,9 @@ $jpeg_quality	= 80;
 $overlay_image	= "finn-overlay.png";
 $upload_folder	= "upload/";
 $filename		= $_FILES["image"]['name'];
+$file_ext		= array_reverse(explode(".", $filename))[0];
+$tmp_name		= md5(date("l jS \of F Y h:i:s A"));
+$final_file		= $upload_folder.$tmp_name.".".$file_ext;
 
 // 1. Get files
 if ($_FILES["image"]["error"] > 0) {
@@ -29,11 +32,12 @@ if ($_FILES["image"]["error"] > 0) {
 	$finished_image = $resized_image->merge($overlay, "right", "top");
 
 	// 4. Send back finished image with response
-	$finished_image->saveToFile($upload_folder.$filename,$jpeg_quality);
+	$finished_image->saveToFile($final_file,$jpeg_quality);
 	$response = array(
 		'success' => 'Everything went fine',
-		'download_link' => $upload_folder.$filename,
-		'formData' => $_FILES["image"]
+		'download_link' => $final_file,
+		'formData' => $_FILES["image"],
+		'ext' => $file_ext
 		
 	);
 }

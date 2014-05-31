@@ -22,7 +22,7 @@
 					var uploadButton = document.getElementById('submit');
 
 					uploadButton.innerHTML = 'Fikser...';
-
+					$(uploadButton).attr("disabled", true);
 					// Get the selected files from the input
 					var files = fileSelect.files;
 
@@ -52,17 +52,20 @@
 							if(typeof data.error === 'undefined') {
 								console.log(data);
 								uploadButton.innerHTML = 'Last opp';
+								$(uploadButton).attr("disabled", false);
 								$('#image').prop('title', 'Velg bildet ditt');
-								$('#download').append("<a href='"+data.download_link+"' download='"+data.download_link+"'>Last ned "+data.formData.name+"</a>");
+								$('#download').html("<a href='"+data.download_link+"' download='"+data.formData.name+"'>Last ned <em>"+data.formData.name+"</em></a>");
 							} else {
 								// Handle errors here
 								console.log('ERRORS: ' + data.error);
+								$(uploadButton).attr("disabled", false);
 							}
 						},
 						error: function(jqXHR, textStatus, errorThrown){
 							// Handle errors here
 							console.log(jqXHR);	
 							uploadButton.innerHTML = 'Last opp';
+							$(uploadButton).attr("disabled", false);
 						}
 					});
 				}); // End click-event
@@ -81,10 +84,10 @@
 					<form role="form" action="image_processor.php" id="imageform" class="form-inline center-block">
 						<div class="form-group">
 
-							<input type="file" id="image" name="image" title="Velg bildet ditt" data-filename-placement="inside" class="pull-left">
+							<input type="file" id="image" name="image" title="Velg bildet ditt" data-filename-placement="inside" class="pull-left btn-lg">
 
 						</div>
-						<button type="submit" class="btn btn-default pull-right" id="submit">Last opp</button>
+						<button type="submit" class="btn btn-lg btn-primary pull-right" id="submit">Last opp</button>
 					</form>
 					<h2 id="download">
 						
